@@ -18,6 +18,10 @@
 </head>
 
 <style>
+    .opacity {
+        opacity: 0.4;
+    }
+
     .bnw-image {
         -webkit-filter: grayscale(100%) blur(5px);
         filter: grayscale(100% blur(5px));
@@ -37,11 +41,12 @@
     <div class="container py-5" id="app">
         <div class="row" id="floor-1" v-if="started && !completed">
             <div class="col-4 m-0 p-0 question-container" v-for="(room, index) in rooms">
-                <button class="btn btn-light" @click="openModal(room, index + 1)" v-if="!room.answered">Загадка #{{ index + 1 }}</button>
+                <button class="btn btn-light" @click="openModal(room, index + 1)" :class="[room.answered?'opacity':'']">Загадка #{{ index + 1 }}</button>
                 <img class="w-100" :src="'images/questions/' + (index + 1)  + '.gif'" :class="[room.answered?'':'bnw-image']">
             </div>
             <div class="col-12 text-center my-5">
-                <a class="btn btn-primary btn-lg" href="/museum/">Назад</a>
+                <button class="btn btn-primary btn-lg" @click="started = false">&larr; Назад</button>
+                <button class="btn btn-primary btn-lg" v-if="rooms.length == rooms.filter(function(room) { return room.answered }).length" @click="completed = true">Дальше &rarr;</button>
             </div>
         </div>
         <div class="text-center" v-else-if="completed">
@@ -51,6 +56,7 @@
                 Ты справился со всеми заданиями в этом доме и смог разгадать Тайну его обитателей. Как ты уже догадался, это семья Николая II, последнего царя Российской Империи, в 1917 году при захвате власти большевиками она была сослана в Тобольск, а затем расстреляна в Екатеринбурге. Несмотря на все трудности и такой трагичный конец этого семейства, все они - Николай II, Александра Федоровна и их дети - Ольга, Татьяна, Мария, Анастасия и Алексей - очень любили книги и даже в свое последнее путешествие взяли их с собой. Книги сопровождали их в веселые и грустные моменты, каждое поколение передавало свои знания и ценности через свою любимую литературу, и это скрепляло их семейные узы. Даже сейчас, спустя более 100 лет, ты можешь увидеть не только фотографии и письма этой семьи, но и те издания, которые они читали в семейном кругу, и прикоснуться к их истории. 
             </p>
             <div class="col-12 text-center my-5">
+                <button class="btn btn-primary btn-lg" @click="completed = false">&larr; Назад</button>
                 <a class="btn btn-primary btn-lg" href="/museum/">Пройти еще раз</a>
             </div>
             <div class="share-buttons">
@@ -139,15 +145,15 @@
                     answered: false
                 },
                 {
-                    title: 'Веранда',
-                    question: 'Скорей же поднимайся на Веранду - чудесное место, где есть множество интересных занятий и игр! Дочери и сын семьи очень любят проводить здесь время вместе с родителями и бабушкой с дедушкой, любоваться удивительными растениями,а вечерами пить чай и слушать истории. Иногда кажется, что здесь можно оказаться в царстве растений и почувствовать себя настоящими маленькими человечками. Сможешь здесь найти книгу, которая описывает такое событие? В царство какого растения она приглашает окунуться?',
-                    answers: ['папоротник', 'папоротника'],
-                    answered: false
-                },
-                {
                     title: 'Учебный класс',
                     question: 'Тссс! Давай на цыпочках пройдем в Учебный класс,ведь, кажется, занятия уже начались! Как и сейчас в школе, дети этого Дома занимаются со своими учителями и изучают различные предметы, не только такие, как география или правописание, но еще и изобразительное искусство, музыка и рукоделие. Как ты думаешь, похоже ли их обучение на то, что есть в современных школах? Давай поближе рассмотрим их учебники. СМожешь ли ты найти учебник, по которому дети изучают окружающий мир и природу своей родины? Как он называется?',
                     answers: ['учебник родная природа', 'родная природа'],
+                    answered: false
+                },
+                {
+                    title: 'Веранда',
+                    question: 'Скорей же поднимайся на Веранду - чудесное место, где есть множество интересных занятий и игр! Дочери и сын семьи очень любят проводить здесь время вместе с родителями и бабушкой с дедушкой, любоваться удивительными растениями,а вечерами пить чай и слушать истории. Иногда кажется, что здесь можно оказаться в царстве растений и почувствовать себя настоящими маленькими человечками. Сможешь здесь найти книгу, которая описывает такое событие? В царство какого растения она приглашает окунуться?',
+                    answers: ['папоротник', 'папоротника'],
                     answered: false
                 },
                 {
@@ -168,12 +174,11 @@
                     if (room.answer && ~room.answers.indexOf(room.answer.toLowerCase())) {
                         room.answered = true;
                         var answeredCount = this.rooms.filter(function(room) { return room.answered }).length
-                        console.log(answeredCount, this.rooms.length)
                         
                         if (answeredCount < this.rooms.length) {
                             alert('Правильно! Осталось ответить на ' + (this.rooms.length - answeredCount) + ' загадок!')
                         } else {
-                            this.completed = true;
+                            // this.completed = true;
                         }
                         $('#roomModal').modal('hide')
                     } else {
