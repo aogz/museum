@@ -2,7 +2,19 @@
 <html>
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    <meta property="og:title" content="Квест музея РГБ">
+    <meta property="og:description" content="Offering tour packages for individuals or groups.">
+    <meta property="og:image" content="http://ogurtsov.me/museum/main.jpg">
+    <meta property="og:url" content="http://ogurtsov.me/museum">
+    
+    <meta name="twitter:title" content="Квест музея РГБ">
+    <meta name="twitter:description" content=" Offering tour packages for individuals or groups.">
+    <meta name="twitter:image" content=" http://ogurtsov.me/museum/main.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+
 </head>
 
 <style>
@@ -29,7 +41,7 @@
                 <img class="w-100" :src="'images/questions/' + (index + 1)  + '.gif'" :class="[room.answered?'':'bnw-image']">
             </div>
             <div class="col-12 text-center my-5">
-                <button class="btn btn-primary btn-lg" @click="started = false">Назад</button>
+                <a class="btn btn-primary btn-lg" href="/museum/">Назад</a>
             </div>
         </div>
         <div class="text-center" v-else-if="completed">
@@ -38,6 +50,13 @@
             <p class="text-muted">
                 Ты справился со всеми заданиями в этом доме и смог разгадать Тайну его обитателей. Как ты уже догадался, это семья Николая II, последнего царя Российской Империи, в 1917 году при захвате власти большевиками она была сослана в Тобольск, а затем расстреляна в Екатеринбурге. Несмотря на все трудности и такой трагичный конец этого семейства, все они - Николай II, Александра Федоровна и их дети - Ольга, Татьяна, Мария, Анастасия и Алексей - очень любили книги и даже в свое последнее путешествие взяли их с собой. Книги сопровождали их в веселые и грустные моменты, каждое поколение передавало свои знания и ценности через свою любимую литературу, и это скрепляло их семейные узы. Даже сейчас, спустя более 100 лет, ты можешь увидеть не только фотографии и письма этой семьи, но и те издания, которые они читали в семейном кругу, и прикоснуться к их истории. 
             </p>
+            <div class="col-12 text-center my-5">
+                <a class="btn btn-primary btn-lg" href="/museum/">Пройти еще раз</a>
+            </div>
+            <div class="share-buttons">
+                <button class="btn btn-outline-primary"><i class="fa fa-vk mr-1"></i>Поделиться в VK</button>
+                <button class="btn btn-outline-primary"><i class="fa fa-facebook mr-1"></i>Поделиться в Facebook</button>
+            </div>          
         </div>
         <div id="intro" class="text-center" v-else>
             <h1>Дорогой друг!</h1>
@@ -74,13 +93,13 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+
     <script>
         var app = new Vue({
             el: '#app',
             data: {
                 started: false,
-                completed: false,
+                completed: true,
                 roomInModal: {},
                 rooms: [
                 {
@@ -150,7 +169,7 @@
                         room.answered = true;
                         var answeredCount = this.rooms.filter(function(room) { return room.answered }).length
                         console.log(answeredCount, this.rooms.length)
-
+                        
                         if (answeredCount < this.rooms.length) {
                             alert('Правильно! Осталось ответить на ' + (this.rooms.length - answeredCount) + ' загадок!')
                         } else {
